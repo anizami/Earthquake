@@ -35,6 +35,16 @@ protected:
 
   // Directional light in the scene
   shared_ptr<Light> light;
+
+  shared_ptr<VertexBuffer> vbuffer;
+
+  AttributeArray gpuVerts;
+
+  AttributeArray gpuNorms;
+    
+  AttributeArray gpuTexCoords;
+
+  IndexStream  gpuIndices;
  
 };
 

@@ -98,13 +98,13 @@
 
 compiler: %(defaultcompiler)s
 
-include: %(defaultinclude)s;/G3D10/include
+include: %(defaultinclude)s;/Users/guillermovera/G3D10/include
 
-library: %(defaultlibrary)s;/G3D10/lib
+library: %(defaultlibrary)s;/Users/guillermovera/G3D10/lib
 
 exclude: %(defaultexclude)s
 
-workdir: .
+workdir: data-files
 
 # Colon-separated list of libraries on which this project depends.  If
 # a library is specified (e.g., png.lib) the platform-appropriate 
@@ -114,18 +114,17 @@ workdir: .
 # and library paths and linked against.
 uses:
 
-
 ################################################################
 [DEBUG]
 
-compileoptions: -lXcursor
+compileoptions: -stdlib=libc++
 
-linkoptions: -lXcursor
+linkoptions: -stdlib=libc++
 
 ################################################################
 [RELEASE]
 
-compileoptions:
+compileoptions: -stdlib=libc++
 
-linkoptions: -lXcursor
+linkoptions: -stdlib=libc++
 

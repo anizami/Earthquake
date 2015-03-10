@@ -20,14 +20,61 @@ void Earth::setupGeometry() {
   const int STACKS = 20;
   const int SLICES = 40;
 
+	Array<Vector3> cpuVerts;
+	Array<Vector3> cpuNorms;
+	Array<int> cpuIndices;
+	Array<Vector2> cpuTexCoords;
 
+	for(int i=0;i<STACKS;i++){
+		for (int j = 0; j < SLICES; ++j)
+		{
+			double latitude = (180 / STACKS) * i;
+			double longitude = (360 / SLICES) * j;
+			Vector3 tempVector = getPosition(latitude, longitude);
+			cpuVerts.append(tempVector);
+			cpuNorms.append(tempVector.unit());
+			cpuTexCoords.append(Vector2(longitude / 360, latitude / 180));
+			/* code */
+		}
+	}
+
+	for (int i = 0; i < STACKS - 1; ++i)
+	{
+		for (int j = 1; j < SLICES; ++j)
+		{
+			int jMod = j % SLICES;
+			cpuIndices.append(SLICES * i + jMod, (SLICES * (i + 1)) + jMod - 1, (SLICES * i) + jMod - 1);
+			cpuIndices.append(SLICES * i + jMod, (SLICES * (i + 1)) + jMod, (SLICES * (i + 1)) + jMod - 1);
+
+		}
+	}
+
+
+	vbuffer = VertexBuffer::create((sizeof(Vector3) + sizeof(Vector3)) * cpuVerts.size() +
+		sizeof(int)*cpuIndices.size() + (sizeof(Vector2) * cpuTexCoords.size()) );
+	debugAssertGLOk();
+
+	gpuVerts = AttributeArray(cpuVerts, vbuffer);
+	debugAssertGLOk();
+	gpuNorms = AttributeArray(cpuNorms, vbuffer);
+	debugAssertGLOk();
+	gpuIndices = IndexStream(cpuIndices, vbuffer);
+	debugAssertGLOk();
+	gpuTexCoords = AttributeArray(cpuTexCoords, vbuffer);
+	debugAssertGLOk();
+	
 }
 
 Vector3 Earth::getPosition(double latitude, double longitude) {
     // TODO: Given a latitude and longitude as input, return the corresponding 3D x,y,z position
     // on your Earth geometry
     // Should somehow test this to see it returns (0,1,0) for lat,lon = 0, 0
-    return Vector3(cos(toRadians(latitude)) * sin(toRadians(longitude)), sin(toRadians(latitude)), cos(toRadians(latitude)) * cos(toRadians(longitude)));
+    double y = sin(toRadians(latitude));
+    if (latitude > 90){
+    	y *= -1;
+    }
+
+    return Vector3(cos(toRadians(latitude)) * sin(toRadians(longitude)), y, cos(toRadians(latitude)) * cos(toRadians(longitude)));
 }
 
 void Earth::setupShader() {
@@ -49,6 +96,15 @@ void Earth::configureShaderArgs(RenderDevice* rd) {
 	
 	//TODO: Set the attribute arrays and primitive types to draw the geometry
 	//      that you created in setupGeometry().
+
+	args.setAttributeArray("vertex", gpuVerts);
+	args.setAttributeArray("normal", gpuNorms);
+
+	args.setIndexStream(gpuIndices);
+	args.setPrimitiveType(PrimitiveType::TRIANGLES);
+
+	args.setAttributeArray("texCoord0", gpuTexCoords);
+
 	
 	rd->apply(shader, args);
 }
