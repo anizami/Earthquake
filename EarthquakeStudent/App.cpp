@@ -111,7 +111,8 @@ void App::onGraphics3D(RenderDevice* rd, Array<shared_ptr<Surface> >& surface3D)
   for (int x=start; x<end; x++) {
     Earthquake e = eqd.getByIndex(x);
     // TODO: Draw earthquake e
-
+    Draw::sphere(Sphere(earth->getPosition(e.getLatitude(), e.getLongitude()), 0.007 * e.getMagnitude()), 
+                  rd, Color3(0.5,0,0), Color4::clear());
 
   }
 
