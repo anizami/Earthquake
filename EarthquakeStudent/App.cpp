@@ -38,6 +38,7 @@ void App::onInit() {
   currentTime = eqd.getByIndex(eqd.getMinIndex()).getDate().asSeconds();
   font = GFont::fromFile("$G3D10DATA/font/arial.fnt");
   rotation = Matrix3::identity();
+  rotationSpeed = 400; //bigger == slower, DO NOT MAKE ZERO
   playing = true;
 }
 
@@ -67,9 +68,12 @@ void App::onUserInput(UserInput *ui) {
   if (ui->keyDown(GKey::LEFT_MOUSE)) {
     // TODO: Update the "rotation" matrix based on how the user has dragged the mouse
     // Note: You can get mouse movement since the last frame with:  Vector2 dxy = ui->mouseDXY();
-
-
-
+    Vector3 y(0, 1, 0);
+    Vector3 x(1, 0 , 0);
+    Vector2 dxy = ui->mouseDXY();
+    rotation = Matrix3::fromAxisAngle(y, dxy.x * pi() / rotationSpeed) 
+             * Matrix3::fromAxisAngle(x, dxy.y * pi() / rotationSpeed) 
+             * rotation;
   }
 }
 

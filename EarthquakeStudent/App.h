@@ -24,6 +24,7 @@ protected:
   double currentTime;
   bool playing;
   double playbackScale;
+  int rotationSpeed;
   
   // Database through which you can access the earthquakes
   EarthquakeDatabase eqd;
@@ -36,7 +37,8 @@ protected:
 
   // Rotation matrix for the earth and displayed earthquakes
   Matrix3 rotation;
-  
+
+
 };
 
 #endif
