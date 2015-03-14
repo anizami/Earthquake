@@ -105,8 +105,8 @@ void Earth::configureShaderArgs(RenderDevice* rd) {
 
 	args.setAttributeArray("texCoord0", gpuTexCoords);
 
-	rd->setRenderMode(RenderDevice::RENDER_WIREFRAME);
-	rd->setCullFace(CullFace::NONE);
+	// rd->setRenderMode(RenderDevice::RENDER_WIREFRAME);
+	// rd->setCullFace(CullFace::NONE);
 	
 	rd->apply(shader, args);
 }
