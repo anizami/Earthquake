@@ -26,26 +26,22 @@ void Earth::setupGeometry() {
 	Array<Vector2> cpuTexCoords;
 
 	for(int i=0;i<STACKS;i++){
-		for (int j = 0; j < SLICES; ++j)
-		{
-			double latitude = (180 / STACKS) * i;
-			double longitude = (360 / SLICES) * j;
+		for (int j = 0; j < SLICES; ++j){
+			double latitude = (180.0 / STACKS) * i;
+			double longitude = (360.0 / SLICES) * j;
 			Vector3 tempVector = getPosition(latitude, longitude);
 			cpuVerts.append(tempVector);
 			cpuNorms.append(tempVector.unit());
-			cpuTexCoords.append(Vector2(longitude / 360, latitude / 180));
+			cpuTexCoords.append(Vector2(longitude / 360.0, latitude / 180.0));
 			/* code */
 		}
 	}
 
-	for (int i = 0; i < STACKS - 1; ++i)
-	{
-		for (int j = 1; j < SLICES; ++j)
-		{
+	for (int i = 0; i < STACKS - 1; ++i){
+		for (int j = 1; j < SLICES; ++j){
 			int jMod = j % SLICES;
 			cpuIndices.append(SLICES * i + jMod, (SLICES * (i + 1)) + jMod - 1, (SLICES * i) + jMod - 1);
 			cpuIndices.append(SLICES * i + jMod, (SLICES * (i + 1)) + jMod, (SLICES * (i + 1)) + jMod - 1);
-
 		}
 	}
 
@@ -69,12 +65,12 @@ Vector3 Earth::getPosition(double latitude, double longitude) {
     // TODO: Given a latitude and longitude as input, return the corresponding 3D x,y,z position
     // on your Earth geometry
     // Should somehow test this to see it returns (0,1,0) for lat,lon = 0, 0
-    double y = sin(toRadians(latitude));
-    if (latitude > 90){
-    	y *= -1;
-    }
+    double y = cos(toRadians(latitude));
+//    if (latitude > 90){
+//    	y *= -1;
+//    }
 
-    return Vector3(cos(toRadians(latitude)) * sin(toRadians(longitude)), y, cos(toRadians(latitude)) * cos(toRadians(longitude)));
+    return Vector3(sin(toRadians(latitude)) * sin(toRadians(longitude)), y, sin(toRadians(latitude)) * cos(toRadians(longitude)));
 }
 
 void Earth::setupShader() {
@@ -105,8 +101,13 @@ void Earth::configureShaderArgs(RenderDevice* rd) {
 
 	args.setAttributeArray("texCoord0", gpuTexCoords);
 
+<<<<<<< HEAD
 	// rd->setRenderMode(RenderDevice::RENDER_WIREFRAME);
 	// rd->setCullFace(CullFace::NONE);
+=======
+//	rd->setRenderMode(RenderDevice::RENDER_WIREFRAME);
+	rd->setCullFace(CullFace::NONE);
+>>>>>>> 8a8c375be50ed14605d0fce623428c0ddf1b39b0
 	
 	rd->apply(shader, args);
 }
