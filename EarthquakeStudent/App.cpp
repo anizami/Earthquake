@@ -116,6 +116,13 @@ void App::onGraphics3D(RenderDevice* rd, Array<shared_ptr<Surface> >& surface3D)
 
   }
 
+  //TESTING:
+  for(int i = 0; i <= 20; i++){
+    for (int j = 0; j < 40; ++j){
+      Draw::sphere(Sphere(earth->getPosition(180.0/20 * i, 360.0/40 * j), 0.01), rd, Color3(0.5,0,0), Color4::clear());
+    }
+  }
+
   rd->popState();
 
   // Call to make the GApp show the output of debugDraw

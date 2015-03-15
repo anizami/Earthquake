@@ -25,7 +25,7 @@ void Earth::setupGeometry() {
 	Array<int> cpuIndices;
 	Array<Vector2> cpuTexCoords;
 
-	for(int i=0;i<STACKS;i++){
+	for(int i = 0; i <= STACKS; i++){
 		for (int j = 0; j < SLICES; ++j){
 			double latitude = (180.0 / STACKS) * i;
 			double longitude = (360.0 / SLICES) * j;
@@ -37,11 +37,16 @@ void Earth::setupGeometry() {
 		}
 	}
 
-	for (int i = 0; i < STACKS - 1; ++i){
-		for (int j = 1; j < SLICES; ++j){
+	for (int i = 0; i <= STACKS; ++i){
+		for (int j = 1; j <= SLICES; ++j){
 			int jMod = j % SLICES;
-			cpuIndices.append(SLICES * i + jMod, (SLICES * (i + 1)) + jMod - 1, (SLICES * i) + jMod - 1);
-			cpuIndices.append(SLICES * i + jMod, (SLICES * (i + 1)) + jMod, (SLICES * (i + 1)) + jMod - 1);
+			if (j < SLICES){
+				cpuIndices.append(SLICES * i + j, (SLICES * (i + 1)) + j - 1, (SLICES * i) + j - 1);
+				cpuIndices.append(SLICES * i + j, (SLICES * (i + 1)) + j, (SLICES * (i + 1)) + j - 1);
+			} else {
+				//cpuIndices.append(SLICES * i + j, (SLICES * (i + 1)) + j - 1, (SLICES * i) + j - 1);
+				cpuIndices.append(SLICES * i + j, (SLICES * (i + 1)) + j, (SLICES * (i + 1)) + j - 1);
+			}
 		}
 	}
 
