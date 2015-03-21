@@ -20,13 +20,15 @@ void Earth::setupGeometry() {
   const int STACKS = 20;
   const int SLICES = 40;
 
+  int x1, x2, y1, y2, z1, z2;
+
 	Array<Vector3> cpuVerts;
 	Array<Vector3> cpuNorms;
 	Array<int> cpuIndices;
 	Array<Vector2> cpuTexCoords;
 
-	for(int i = 0; i <= STACKS; i++){
-		for (int j = 0; j < SLICES; ++j){
+	for(int i = 0; i <= STACKS; i++){		//To have i stacks we need i+1 iterations
+		for (int j = 0; j <= SLICES; j++){
 			double latitude = (180.0 / STACKS) * i;
 			double longitude = (360.0 / SLICES) * j;
 			Vector3 tempVector = getPosition(latitude, longitude);
@@ -37,13 +39,18 @@ void Earth::setupGeometry() {
 	}
 
 	for (int i = 0; i <= STACKS; ++i){
-		for (int j = 1; j <= SLICES; ++j){
-			int jMod = j % SLICES;
-			cpuIndices.append(SLICES * i + j, (SLICES * (i + 1)) + j - 1, (SLICES * i) + j - 1);
-			cpuIndices.append(SLICES * i + j, (SLICES * (i + 1)) + j, (SLICES * (i + 1)) + j - 1);
+		for (int j = 0; j < SLICES; ++j){
+				x1 = ((SLICES + 1) * i) + j;
+				y1 = (SLICES + 1) * (i + 1) + j;
+				z1 = x1 + 1;
+
+				x2 = z1;
+				y2 = y1;
+				z2 = y1 + 1;
+				cpuIndices.append( x1, y1, z1 );
+				cpuIndices.append( x2, y2, z2 );		
 		}
 	}
-
 
 	vbuffer = VertexBuffer::create((sizeof(Vector3) + sizeof(Vector3)) * cpuVerts.size() +
 		sizeof(int)*cpuIndices.size() + (sizeof(Vector2) * cpuTexCoords.size()) );

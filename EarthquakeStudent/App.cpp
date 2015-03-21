@@ -6,10 +6,13 @@
 
 const int PLAYBACK_WINDOW = 365 * 24 * 60 * 60;
 
+Color3 makeColor(int index);
+
 using namespace std;
 
 App::App(const GApp::Settings& settings) : GApp(settings) {
-  renderDevice->setColorClearValue(Color3(0.1, 0.12, 0.15));
+  //renderDevice->setColorClearValue(Color3(0.1, 0.12, 0.15));
+  renderDevice->setColorClearValue(Color3(0.3, 0.3, 0.3));
   renderDevice->setSwapBuffersAutomatically(true);
 }
 
@@ -111,22 +114,20 @@ void App::onGraphics3D(RenderDevice* rd, Array<shared_ptr<Surface> >& surface3D)
   for (int x=start; x<end; x++) {
     Earthquake e = eqd.getByIndex(x);
     // TODO: Draw earthquake e
-    Draw::sphere(Sphere(earth->getPosition(e.getLatitude(), e.getLongitude()), 0.007 * e.getMagnitude()), 
-                  rd, Color3(0.5,0,0), Color4::clear());
+    Draw::sphere(Sphere(earth->getPosition(e.getLatitude() + 90, e.getLongitude() + 360), 0.007 * e.getMagnitude()), 
+                  rd, makeColor(x), Color4::clear());
 
-  }
-
-  //TESTING:
-  for(int i = 0; i <= 20; i++){
-    for (int j = 0; j < 40; ++j){
-      Draw::sphere(Sphere(earth->getPosition(180.0/20 * i, 360.0/40 * j), 0.01), rd, Color3(0.5,0,0), Color4::clear());
-    }
   }
 
   rd->popState();
 
   // Call to make the GApp show the output of debugDraw
   drawDebugShapes();
+}
+
+Color3 makeColor(int index) {
+  index = index % 250;
+  return Color3(0.5 * 1 / index,0,0);
 }
 
 
