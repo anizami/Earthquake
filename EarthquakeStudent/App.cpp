@@ -110,13 +110,13 @@ void App::onGraphics3D(RenderDevice* rd, Array<shared_ptr<Surface> >& surface3D)
 
   // Draw earthquakes
   int start = eqd.getIndexByDate(Date(currentTime - PLAYBACK_WINDOW));
-  int end = eqd.getIndexByDate(Date(currentTime));
+  int end = eqd.getIndexByDate(Date(currentTime));                 
+
   for (int x=start; x<end; x++) {
     Earthquake e = eqd.getByIndex(x);
     // TODO: Draw earthquake e
-    Draw::sphere(Sphere(earth->getPosition(e.getLatitude() + 90, e.getLongitude() + 360), 0.007 * e.getMagnitude()), 
-                  rd, makeColor(x), Color4::clear());
-
+    Draw::sphere(Sphere(earth->getPosition((e.getLatitude() * -1) + 90, e.getLongitude() + 180), 0.007 * e.getMagnitude()), 
+                  rd, makeColor(x), Color4::clear()); 
   }
 
   rd->popState();
