@@ -3,6 +3,7 @@
 #include "EarthquakeDatabase.h"
 #include <iostream>
 #include <sstream>
+#include <math.h>
 
 const int PLAYBACK_WINDOW = 365 * 24 * 60 * 60;
 
@@ -110,13 +111,18 @@ void App::onGraphics3D(RenderDevice* rd, Array<shared_ptr<Surface> >& surface3D)
 
   // Draw earthquakes
   int start = eqd.getIndexByDate(Date(currentTime - PLAYBACK_WINDOW));
-  int end = eqd.getIndexByDate(Date(currentTime));                 
+  int end = eqd.getIndexByDate(Date(currentTime)); 
+
+  double magnitudePower;                
 
   for (int x=start; x<end; x++) {
     Earthquake e = eqd.getByIndex(x);
     // TODO: Draw earthquake e
-    Draw::sphere(Sphere(earth->getPosition((e.getLatitude() * -1) + 90, e.getLongitude() + 180), 0.007 * e.getMagnitude()), 
+    magnitudePower = pow(2.0, e.getMagnitude()) / 10000;
+    cout << "Mag size: " << magnitudePower << "\n";
+    Draw::sphere(Sphere(earth->getPosition((e.getLatitude() * -1) + 90, e.getLongitude() + 180), magnitudePower), 
                   rd, makeColor(x), Color4::clear()); 
+    
   }
 
   rd->popState();
@@ -127,7 +133,7 @@ void App::onGraphics3D(RenderDevice* rd, Array<shared_ptr<Surface> >& surface3D)
 
 Color3 makeColor(int index) {
   index = index % 250;
-  return Color3(0.5 * 1 / index,0,0);
+  return Color3(1,0,0);
 }
 
 
