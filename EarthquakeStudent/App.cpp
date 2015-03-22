@@ -7,8 +7,6 @@
 
 const int PLAYBACK_WINDOW = 365 * 24 * 60 * 60;
 
-Color3 makeColor(int index);
-
 using namespace std;
 
 App::App(const GApp::Settings& settings) : GApp(settings) {
@@ -112,16 +110,14 @@ void App::onGraphics3D(RenderDevice* rd, Array<shared_ptr<Surface> >& surface3D)
   // Draw earthquakes
   int start = eqd.getIndexByDate(Date(currentTime - PLAYBACK_WINDOW));
   int end = eqd.getIndexByDate(Date(currentTime)); 
-
+ 
   double magnitudePower;                
 
   for (int x=start; x<end; x++) {
     Earthquake e = eqd.getByIndex(x);
-    // TODO: Draw earthquake e
     magnitudePower = pow(2.0, e.getMagnitude()) / 10000;
-    cout << "Mag size: " << magnitudePower << "\n";
     Draw::sphere(Sphere(earth->getPosition((e.getLatitude() * -1) + 90, e.getLongitude() + 180), magnitudePower), 
-                  rd, makeColor(x), Color4::clear()); 
+                  rd, makeColor((currentTime - e.getDate().asSeconds()) / PLAYBACK_WINDOW), Color4::clear()); 
     
   }
 
@@ -131,9 +127,23 @@ void App::onGraphics3D(RenderDevice* rd, Array<shared_ptr<Surface> >& surface3D)
   drawDebugShapes();
 }
 
-Color3 makeColor(int index) {
-  index = index % 250;
-  return Color3(1,0,0);
+Color3 App::makeColor(double t) {
+  // Color 1: initial
+  double r1 = 0.93;
+  double g1 = 0.25;
+  double b1 = 0;
+
+  // Color 2: final
+  double r2 = 1;
+  double g2 = 1; 
+  double b2 = 0;
+
+  // Interpolated colors
+  double interR = (1 - t) * r1 + t * r2;
+  double interG = (1 - t) * g1 + t * g2;
+  double interB = (1 - t) * b1 + t * b2;
+
+  return Color3(interR,interG,interB);
 }
 
 

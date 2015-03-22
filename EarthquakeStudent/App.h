@@ -18,6 +18,9 @@ public:
   virtual void onGraphics3D(RenderDevice* rd, Array<shared_ptr<Surface> >& surface);
   virtual void onGraphics2D(RenderDevice* rd, Array<shared_ptr<Surface2D> >& surface2D);
 
+  virtual Color3 makeColor(double t);
+
+
   
 protected:
 

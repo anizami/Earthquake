@@ -68,9 +68,6 @@ void Earth::setupGeometry() {
 }
 
 Vector3 Earth::getPosition(double latitude, double longitude) {
-    // TODO: Given a latitude and longitude as input, return the corresponding 3D x,y,z position
-    // on your Earth geometry
-    // Should somehow test this to see it returns (0,1,0) for lat,lon = 0, 0 --> I tested this with a python script, it works
     return Vector3(sin(toRadians(latitude)) * sin(toRadians(longitude)), 
     			   cos(toRadians(latitude)), sin(toRadians(latitude)) * cos(toRadians(longitude)));
 }
