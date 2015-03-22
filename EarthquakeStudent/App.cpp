@@ -68,7 +68,6 @@ void App::onUserInput(UserInput *ui) {
 
   // Rotate the earth when the user clicks and drags the mouse
   if (ui->keyDown(GKey::LEFT_MOUSE)) {
-    // TODO: Update the "rotation" matrix based on how the user has dragged the mouse
     // Note: You can get mouse movement since the last frame with:  Vector2 dxy = ui->mouseDXY();
     Vector3 y(0, 1, 0);
     Vector3 x(1, 0 , 0);
@@ -104,7 +103,6 @@ void App::onGraphics3D(RenderDevice* rd, Array<shared_ptr<Surface> >& surface3D)
   rd->pushState();
   rd->setObjectToWorldMatrix(CoordinateFrame(rotation, Vector3(0,0,0)));
 
-  // TODO: Draw the earth by implementing the draw function inside the Earth class
   earth->draw(rd);
 
   // Draw earthquakes

@@ -14,9 +14,6 @@ Earth::Earth(shared_ptr<Camera> camera, shared_ptr<Light> light) {
 }
 
 void Earth::setupGeometry() {
-  // TODO: Write your own code here to tesselate and create texture coordinates for the Earth 
-  // and then save the data to VertexBuffers, AttributeArrays, and an IndexStream.  The tesselation
-  // should be based on the STACKS and SLICES parameters.
   const int STACKS = 20;
   const int SLICES = 40;
 
@@ -27,7 +24,7 @@ void Earth::setupGeometry() {
 	Array<int> cpuIndices;
 	Array<Vector2> cpuTexCoords;
 
-	for(int i = 0; i <= STACKS; i++){		//To have i stacks we need i+1 iterations
+	for(int i = 0; i <= STACKS; i++){	
 		for (int j = 0; j <= SLICES; j++){
 			double latitude = (180.0 / STACKS) * i;
 			double longitude = (360.0 / SLICES) * j;
