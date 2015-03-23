@@ -14,8 +14,8 @@ Earth::Earth(shared_ptr<Camera> camera, shared_ptr<Light> light) {
 }
 
 void Earth::setupGeometry() {
-  const int STACKS = 20;
-  const int SLICES = 40;
+  const int STACKS = 100;
+  const int SLICES = 100;
 
   int x1, x2, y1, y2, z1, z2;
 
